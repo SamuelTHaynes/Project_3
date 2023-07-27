@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hazard Table</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+</head>
+<!-- Selector for columns -->
+
+<body>
+    <div>
+        <label for="column-select">Select Column:</label>
+        <select id="column-select">
+            <option value="-1">All Columns</option>
+            <option value="3">POPULATION</option>
+            <option value="4">BUILDVALUE</option>
+            <option value="5">AGRIVALUE</option>
+            <option value="6">AREA</option>
+            <option value="7">NRI_ID</option>
+            <option value="8">TRND_EVNTS</option>
+            <option value="9">TRND_exposed_building_value </option>
+            <option value="10">TRND_EXP_AREA</option>
+            <option value="11">TRND_expected_loss_building</option>
+            <option value="12">TRND_expected_loss_agri</option>
+            <option value="13">TRND_expected_loss_score</option>
+            <option value="14">TRND_expected_loss_rating</option>
+            <option value="15">WFIR_exposed_building_value</option>
+            <option value="16">WFIR_EXP_AREA</option>
+            <option value="17">WFIR_expected_loss_building</option>
+            <option value="18">WFIR_expected_loss_agri</option>
+            <option value="19">WFIR_expected_loss_score</option>
+            <option value="20">WFIR_expected_loss_rating</option>
+            <option value="21">HRCN_EVNTS</option>
+            <option value="22">HRCN_exposed_building_value</option>
+            <option value="23">HRCN_EXP_AREA</option>
+            <option value="24">HRCN_expected_loss_building</option>
+            <option value="25">HRCN_expected_loss_agri</option>
+            <option value="26">HRCN_expected_loss_score</option>
+            <option value="27">HRCN_expected_loss_rating</option>
+            <option value="28">HAIL_EVNTS</option>
+            <option value="29">HAIL_exposed_building_value</option>
+            <option value="30">HAIL_EXP_AREA</option>
+            <option value="31">HAIL_expected_loss_building</option>
+            <option value="32">HAIL_expected_loss_agri</option>
+            <option value="33">HAIL_expected_loss_score</option>
+            <option value="34">HAIL_expected_loss_rating</option>
+            <option value="35">ERQK_exposed_building_value</option>
+            <option value="36">ERQK_EXP_AREA</option>
+            <option value="37">ERQK_expected_loss_building</option>
+            <option value="38">ERQK_expected_loss_score</option>
+            <option value="39">ERQK_expected_loss_rating</option>
+
+        </select>
+    </div>
+
+    {{ table | safe }}
+    <div id = "chartjs"></div>
+
+
+    <!-- Initialize libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+    <!-- Table script -->
+    <script>
+
+        $(document).ready(function () {
+            const dataTable = $('#dataTable').DataTable();
+
+            $('#column-select').on('change', function () {
+                const columnIndex = parseInt($(this).val());
+                if (columnIndex === -1) {
+                    // Show all columns
+                    dataTable.columns().visible(true);
+                } else {
+                    // Hide all columns except COUNTY and STATE then show the selected column
+                    dataTable.columns().visible(false);
+                    dataTable.column(1).visible(true); // STATE
+                    dataTable.column(3).visible(true); // COUNTY
+                    dataTable.column(columnIndex + 1).visible(true);
+                }
+            });
+        });
+    </script>
+
+
+
+    <!-- statistics.js -->
+    <script src="chart.js"></script>
+    <script>
+        const data = {
+            labels: [
+                'Red',
+                'Green',
+                'Yellow',
+                'Grey',
+                'Blue'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [11, 16, 7, 3, 14],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(75, 192, 192)',
+                    'rgb(255, 205, 86)',
+                    'rgb(201, 203, 207)',
+                    'rgb(54, 162, 235)'
+                ]
+            }]
+        };
+
+
+        const config = {
+            type: 'polarArea',
+            data: data,
+            options: {}
+        };
+
+        let chartthing = document.getElementById('chartjs');
+        new chart (chartthing, {...data,...config});
+
+    </script>
+</body>
+
+</html>

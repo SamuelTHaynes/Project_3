@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapped Hazard Data</title>
+    <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin="" />
+   <!-- Leaflet JavaScript code -->
+   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script>
+
+<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+
+</head>
+<body>
+    <div id="map" ></div>
+    <label for="dropdown">Select an Hazard:</label>
+    <select id="dropdown">
+      <option value="Tornado">Tornado</option>
+      <option value="Wildfire">WildFire</option>
+      <option value="Earthquake">Earthquake</option>
+      <option value="Hail">Hail</option>
+      <option value="Hurricane">Hurricane</option>
+    </select>
+
+  <!-- JavaScript file -->
+  <script type="text/javascript" src="\static\js\prac_map2.js"></script>
+
+
+</body>
+</html>

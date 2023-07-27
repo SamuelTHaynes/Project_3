@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Routes Buttons</title>
+</head>
+<body>
+    <h1>Routes Buttons</h1>
+    <div>
+        <button onclick="redirectTo('/events')">Events</button>
+        <button onclick="redirectTo('/geojson')">GeoJSON</button>
+        <button onclick="redirectTo('/chartjs')">Pie Chart</button>
+        <button onclick="redirectTo('/bar_loss')">Expected Loss Chart</button>
+        <button onclick="redirectTo('/csv')">Table</button>
+    </div>
+
+    <script>
+        function redirectTo(route) {
+            window.location.href = route;
+        }
+    </script>
+   
+</body>
+</html>
