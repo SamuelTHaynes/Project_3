@@ -1,4 +1,9 @@
 # Project_3
-Visualizing Natural Disaster Risk / Damage
+Disaster Risk Analysis for Insurance Companies
 
-- Open Clean_datav1.5.ipynb
+- Open etl_pipeline.ipynb
+  - Run all cells
+  - Ensure you have Hazard_data.csv Pie_chart.csv updatedGeoJson.data
+- Visualizations
+  - Opening app.py in VSCode and run your flask server
+    - Go to the menu where you can select each visualization 
