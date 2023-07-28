@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bar Chart</title>
+    <!-- Add Plotly's JavaScript library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.0.0/d3.min.js"></script>
+    <link rel="shortcut icon" href="#">
+</head>
+
+<body>
+    <div>
+        <!-- Add the hazard dropdown -->
+        <label for="hazard">Select a Hazard Type:</label>
+        <select id="hazard" name="hazard">
+            <option value="Hail" {% if selected_hazard=='Hail' %}selected{% endif %}>Hail</option>
+            <option value="Tornado" {% if selected_hazard=='Tornado' %}selected{% endif %}>Tornado</option>
+            <option value="Hurricane" {% if selected_hazard=='Hurricane' %}selected{% endif %}>Hurricane</option>
+        </select>
+    </div>
+    <div>
+        <!-- Add the state dropdown -->
+        <label for="state">Select a State:</label>
+        <select id="state" name="state">
+            <!-- Populate the dropdown options with the states fetched from the database -->
+            {% for state in states %}
+            <option value="{{ state }}" {% if state==selected_state %}selected{% endif %}>{{ state }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div id="myDiv">
+
+    </div>
+
+    <script>
+        // JavaScript code to handle the dropdown change events
+        const hazardDropdown = document.getElementById('hazard');
+        const stateDropdown = document.getElementById('state');
+
+        // Retrieve the selected values from localStorage, if available
+        const selectedHazard = localStorage.getItem('selectedHazard');
+        const selectedState = localStorage.getItem('selectedState');
+        if (selectedHazard) {
+            hazardDropdown.value = selectedHazard;
+        }
+        if (selectedState) {
+            stateDropdown.value = selectedState;
+        }
+
+        hazardDropdown.addEventListener('change', function () {
+            const selectedHazard = this.value;
+            localStorage.setItem('selectedHazard', selectedHazard);
+            get_data(updateURLParams());
+        });
+
+        stateDropdown.addEventListener('change', function () {
+            const selectedState = this.value;
+            localStorage.setItem('selectedState', selectedState);
+            get_data(updateURLParams());
+        });
+
+        function updateURLParams() {
+            const selectedHazard = hazardDropdown.value;
+            const selectedState = stateDropdown.value;
+            let newUrl = '/boston?';
+            if (selectedHazard) {
+                newUrl += 'selected_hazard=' + selectedHazard;
+            }
+            if (selectedState) {
+                newUrl += '&selected_state=' + selectedState;
+            }
+            console.log(newUrl);
+            return newUrl;
+        }
+        function get_data(url) {
+            d3.json(url).then(createtable);
+        }
+
+        function createtable(data) {
+            // console.log(data);
+            let h = {
+                Hail: 'HAIL_EVNTS',
+                Tornado: 'TRND_EVNTS',
+                Hurricane: 'HRCN_EVNTS'
+            }
+            var dt = [
+                {
+                    x: data.map(x => x.COUNTY),
+                    y: data.map(y => y[h[hazardDropdown.value]]),
+                    type: 'bar'
+                }
+            ];
+
+            var layout = {
+                title: 'Number of ' + hazardDropdown.value +' Events in '+ stateDropdown.value + ' by County',
+                xaxis: {
+                    title: 'Counties',
+                    titlefont: {
+                        family: 'Arial, sans-serif',
+                        size: 14,
+                        color: 'black'
+                    },
+                    showticklabels: true,
+                    tickangle: 45,
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 10,
+                        color: 'black'
+                    },
+                    exponentformat: 'e',
+                    showexponent: 'all'
+                },
+                yaxis: {
+                    title: 'Number of Events',
+                    titlefont: {
+                        family: 'Arial, sans-serif',
+                        size: 14,
+                        color: 'black'
+                    },
+                    showticklabels: true,
+                    tickangle: 0,
+                    tickfont: {
+                        family: 'Old Standard TT, serif',
+                        size: 14,
+                        color: 'black'
+                    },
+                    exponentformat: 'e',
+                    showexponent: 'all'
+                }
+                
+            };
+
+            Plotly.newPlot('myDiv', dt, layout);
+
+
+
+        }
+    </script>
+</body>
+
+</html>
